@@ -1,5 +1,7 @@
 <?php
-
+error_reporting(E_ALL | E_STRICT);
+ini_set('display_errors', 1);
+ini_set('html_errors', 1);
 /**
 
  * WordPress için taban ayar dosyası.
@@ -151,6 +153,7 @@ if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(__FILE__) . '/');
 
 
+require_once ABSPATH.'vendor/autoload.php';
 
 /** WordPress değişkenlerini ve yollarını kurar. */
 
