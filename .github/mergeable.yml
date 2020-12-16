@@ -1,7 +1,7 @@
 ---
 version: 2
 mergeable:
-  - when: pull_request.*
+  - when: pull_request.*, pull_request_review.*
     validate:
       - do: headRef
         must_include:
@@ -21,7 +21,7 @@ mergeable:
         block:
           changes_requested: true # If true, block all approvals when one of the reviewers gave 'changes_requested' review
           message: 'To merge the PR, you have to complete the Change Requests'
-  - when: pull_request.*
+  - when: pull_request.*, pull_request_review.*
     validate:
       - do: description
         must_include:
