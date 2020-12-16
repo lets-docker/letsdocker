@@ -5,12 +5,18 @@ mergeable:
     validate:
       - do: headRef
         must_include:
-           regex: '(^|[-\/])(major|release|minor|feature|patch|issue|hotfix|dependabot\/|whitesource)[-\/](\b[A-Z][A-Z0-9]+-\d+\b).+$'
-           message: 'Custom message...'
+          regex: '(\b[A-Z][A-Z0-9]+-\d+\b).+$'
+          message: 'Your branch name should include JIRA TICKET ID (i.e ABC-1234-test-branch)'
+      - do: title
+        must_exclude:
+          regex: ^\[WIP\]
+      - do: label
+        must_exclude:
+          regex: 'wip'
       - do: description
-        must_include:
-          regex: \b[A-Z][A-Z0-9]+-\d+\b
-          message: All pull requests must include a JIRA ticket on it.
+        no_empty:
+          enabled: true
+          message: Description matter and should not be empty. Provide detail with **what** was changed, **why** it was changed, and **how** it was changed.
       - do: approvals
         min:
           count: 1
@@ -21,14 +27,3 @@ mergeable:
         block:
           changes_requested: true # If true, block all approvals when one of the reviewers gave 'changes_requested' review
           message: 'To merge the PR, you have to complete the Change Requests'
-  - when: pull_request.*, pull_request_review.*
-    validate:
-      - do: description
-        must_include:
-          regex: \b[A-Z][A-Z0-9]+-\d+\b
-          message: All pull requests must include a JIRA ticket on it.
-    fail:
-      - do: comment
-        payload:
-          body: >
-            The pull request description must have a JIRA ticket
