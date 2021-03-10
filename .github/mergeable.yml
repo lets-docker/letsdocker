@@ -1,29 +1,14 @@
----
 version: 2
 mergeable:
   - when: pull_request.*, pull_request_review.*
+    name: HelloTech approval
     validate:
-      - do: headRef
-        must_include:
-          regex: '(\b[A-Z][A-Z0-9]+-\d+\b).+$'
-          message: 'Your branch name should include JIRA TICKET ID (i.e ABC-1234-test-branch)'
-      - do: title
-        must_exclude:
-          regex: ^\[WIP\]
-      - do: label
-        must_exclude:
-          regex: 'wip'
-      - do: description
-        no_empty:
-          enabled: true
-          message: Description matter and should not be empty. Provide detail with **what** was changed, **why** it was changed, and **how** it was changed.
       - do: approvals
         min:
           count: 1
-          message: 'At least 1 developer should approve PR to merge'
+          message: 'Developers from all of the required teams, regarding to CODEOWNERS file, need to approve this PR'
         limit:
-          teams: ['@lets-docker/test']
-          owners: false # Optional boolean. When true, the file .github/CODEOWNER is read and only owners approval will count
+          owners: true
         block:
-          changes_requested: true # If true, block all approvals when one of the reviewers gave 'changes_requested' review
-          message: 'To merge the PR, you have to complete the Change Requests'
+          changes_requested: true
+          message: 'To merge this PR, you must complete the Change Requests'
